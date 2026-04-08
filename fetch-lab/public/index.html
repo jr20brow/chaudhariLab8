@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fetch Lab</title>
+    <!-- IMPORT BOOTSTRAP HERE! -->
+</head>
+
+<body class="bg-light">
+    <main class="container py-4">
+        <h1 class="mb-4">Fetch Lab</h1>
+
+        <section id="hello-section" class="card mb-4">
+            <div class="card-body">
+                <h2 class="h4">1. Hello (text response)</h2>
+                <button id="hello-btn" class="btn btn-primary">
+                    Fetch /hello
+                </button>
+                <div id="hello-result" class="alert alert-secondary mt-3 mb-0" role="alert">
+                    Click the button...
+                </div>
+
+                <h2 class="h4">1. Get Time (json response)</h2>
+                <button id="time-btn" class="btn btn-primary">
+                    Fetch /api/time
+                </button>
+                <div id="time-result" class="alert alert-secondary mt-3 mb-0" role="alert">
+                    Click the button...
+                </div>
+            </div>
+        </section>
+
+        <!-- You will add more sections below -->
+
+        <script>
+            // Your fetch code goes here
+            // Put this near the top of your <script> tag
+            function statusCheck(response) {
+                if (response.ok) return response;
+                return response.json()
+                    .then(errData => {
+                        const msg = errData.error
+                            || ('HTTP ' + response.status);
+                        throw new Error(msg);
+                    })
+                    .catch(() => {
+                        throw new Error('HTTP ' + response.status);
+                    });
+            }
+
+            document.getElementById('hello-btn')
+                .addEventListener('click', () => {
+                    fetch('/hello')
+                        .then(statusCheck)
+                        .then(res => res.text())
+                        .then(text => {
+                            document.getElementById('hello-result')
+                                .textContent = text;
+                        })
+                        .catch(error => {
+                            document.getElementById('hello-result')
+                                .textContent = 'Error: '
+                                + error.message;
+                        });
+                });
+
+            document.getElementById('time-btn')
+                .addEventListener('click', () => {
+                    fetch('/api/time')
+                        .then(statusCheck)
+                        .then(res => res.json())
+                        .then(json => {
+                            //CHECK HERE
+                            
+                            document.getElementById('time-result')
+                                .textContent = "Current time: " + JSON.stringify(json.currentTime) + "\nMessage:" + JSON.stringify(json.message);
+                        })
+                        .catch(error => {
+                            document.getElementById('time-result')
+                                .textContent = 'Error: '
+                                + error.message;
+                        });
+                });
+
+        </script>
+    </main>
+</body>
+
+</html>

@@ -56,6 +56,11 @@ app.get('/api/unreliable', (req, res) => {
   }
 });
 
+app.get('/api/headers', (req, res) => {
+  res.json(req.headers);
+});
+
+
  
  
 // ---- Your endpoints go above this line ----
