@@ -60,7 +60,24 @@ app.get('/api/headers', (req, res) => {
   res.json(req.headers);
 });
 
+app.get('/api/messages', (req, res) => {
+  res.type('json').send(messages);
+});
 
+app.post('/api/messages', (req, res) => {
+  const text = req.body.text;
+  const author = req.body.author;
+  if (!text || !author) {
+    res.status(400).json({ error: 'text and author are required' });
+    return;
+  }
+  let message = {
+    id: nextId,
+    text: req.body.text,
+    author: req.body.author
+  }
+  messages[nextId - 1] = message;
+  nextId++;
  
  
 // ---- Your endpoints go above this line ----
