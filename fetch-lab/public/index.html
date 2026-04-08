@@ -31,6 +31,7 @@
                 </div>
 
                 <h2 class="h4">3. Get Name (json response)</h2>
+                <input id="name-input" type="text" placeholder="Enter your name">
                 <button id="name-btn" class="btn btn-primary">
                    Fetch /api/greet
                 </button>
@@ -92,8 +93,7 @@
                         });
                 });
 
-            const name = document.getElementById(
-                'name-input').value;
+            const name = document.getElementById('name-input').value;
             fetch('/api/greet/' + name)
                 .then(statusCheck)
                 .then(res => res.json())
