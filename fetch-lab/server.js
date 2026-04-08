@@ -78,6 +78,7 @@ app.post('/api/messages', (req, res) => {
   }
   messages[nextId - 1] = message;
   nextId++;
+  });
  
  
 // ---- Your endpoints go above this line ----
