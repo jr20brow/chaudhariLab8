@@ -46,6 +46,16 @@
                 <div id="slow-result" class="alert alert-secondary mt-3 mb-0" role="alert">
                     Click the button...
                 </div>
+
+                <h2 class="h4">5. Messages Endpoint </h2>
+                <form id="input-form"">
+                    <input id="msg-author" type="text" placeholder="Enter the author">
+                    <input id="msg-text" type="text" placeholder="Enter the text">
+                    <input id="msg-submit" type="submit" placeholder="Submit">
+                    <div id="msg-result" class="alert alert-secondary mt-3 mb-0" role="alert">
+                        Click submit...
+                    </div>
+                </form>
             </div>
         </section>
 
@@ -83,23 +93,43 @@
                         });
                 });
 
-            document.getElementById('time-btn')
-                .addEventListener('click', () => {
-                    fetch('/api/time')
-                        .then(statusCheck)
-                        .then(res => res.json())
-                        .then(json => {
-                            //CHECK HERE
+            // document.getElementById('time-btn')
+            //     .addEventListener('click', () => {
+            //         fetch('/api/time')
+            //             .then(statusCheck)
+            //             .then(res => res.json())
+            //             .then(json => {
+            //                 //CHECK HERE
 
-                            document.getElementById('time-result')
-                                .textContent = "Current time: " + JSON.stringify(json.currentTime) + "\nMessage:" + JSON.stringify(json.message);
-                        })
-                        .catch(error => {
-                            document.getElementById('time-result')
-                                .textContent = 'Error: '
-                                + error.message;
-                        });
+            //                 document.getElementById('time-result')
+            //                     .textContent = "Current time: " + JSON.stringify(json.currentTime) + "\nMessage:" + JSON.stringify(json.message);
+            //             })
+            //             .catch(error => {
+            //                 document.getElementById('time-result')
+            //                     .textContent = 'Error: '
+            //                     + error.message;
+            //             });
+            //     });
+
+            document.getElementById('time-btn')
+                .addEventListener('click', async () => {
+                    try {
+                        const response =
+                            await fetch('/api/time');
+                        await statusCheck(response);
+                        const data =
+                            await response.json();
+                        document.getElementById(
+                            'time-result').textContent =
+                            data.message + ': '
+                            + data.currentTime;
+                    } catch (error) {
+                        document.getElementById(
+                            'time-result').textContent =
+                            'Error: ' + error.message;
+                    }
                 });
+
 
             document.getElementById('name-btn')
                 .addEventListener('click', () => {
@@ -145,7 +175,44 @@
                                 'alert alert-danger mt-3';
                         });
                 });
+            
+            id("input-form").addEventListener("submit", function(e) {
+                e.preventDefault();
+                postMessage();
+            });
+            async function postMessage() {
+                const text = document.getElementById(
+                    'msg-text').value;
+                const author = document.getElementById(
+                    'msg-author').value;
+                try {
+                    const response = await fetch(
+                        '/api/messages', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+                        body: JSON.stringify(
+                            { text, author })
+                    });
+                    if (!response.ok) {
+                        const errData =
+                            await response.json();
+                        throw new Error(errData.error);
+                    }
+                    const newMsg =
+                        await response.json();
+                    // Display the newly created message
+                            
 
+                } catch (error) {
+                    // Display error
+                    document.getElementById(
+                            'msg-result').textContent =
+                            'Error: ' + error.message;
+                }
+            }
 
 
         </script>
