@@ -22,11 +22,19 @@
                     Click the button...
                 </div>
 
-                <h2 class="h4">1. Get Time (json response)</h2>
+                <h2 class="h4">2. Get Time (json response)</h2>
                 <button id="time-btn" class="btn btn-primary">
                     Fetch /api/time
                 </button>
                 <div id="time-result" class="alert alert-secondary mt-3 mb-0" role="alert">
+                    Click the button...
+                </div>
+
+                <h2 class="h4">3. Get Name (json response)</h2>
+                <button id="name-btn" class="btn btn-primary">
+                   Fetch /api/greet
+                </button>
+                <div id="name-result" class="alert alert-secondary mt-3 mb-0" role="alert">
                     Click the button...
                 </div>
             </div>
@@ -73,7 +81,7 @@
                         .then(res => res.json())
                         .then(json => {
                             //CHECK HERE
-                            
+
                             document.getElementById('time-result')
                                 .textContent = "Current time: " + JSON.stringify(json.currentTime) + "\nMessage:" + JSON.stringify(json.message);
                         })
@@ -83,6 +91,24 @@
                                 + error.message;
                         });
                 });
+
+            const name = document.getElementById(
+                'name-input').value;
+            fetch('/api/greet/' + name)
+                .then(statusCheck)
+                .then(res => res.json())
+                .then(data => {
+                    /* display data.greeting */
+                    document.getElementById('name-result')
+                                .textContent = data;
+                })
+                .catch(error => {
+                    /* handle error */
+                    document.getElementById('name-result')
+                                .textContent = 'Error: '
+                                + error.message;
+                });
+
 
         </script>
     </main>
