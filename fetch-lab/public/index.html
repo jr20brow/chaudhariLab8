@@ -38,6 +38,14 @@
                 <div id="name-result" class="alert alert-secondary mt-3 mb-0" role="alert">
                     Click the button...
                 </div>
+
+                <h2 class="h4">4. Slow Endpoint</h2>
+                <button id="slow-btn" class="btn btn-primary">
+                    Fetch /api/time
+                </button>
+                <div id="slow-result" class="alert alert-secondary mt-3 mb-0" role="alert">
+                    Loading...
+                </div>
             </div>
         </section>
 
@@ -112,6 +120,32 @@
                                 + error.message;
                         });
                 });
+
+            document.getElementById('slow-btn')
+                .addEventListener('click', () => {
+                    const resultDiv =
+                        document.getElementById('slow-result');
+                    resultDiv.textContent =
+                        'Loading... please wait';
+                    resultDiv.className =
+                        'alert alert-secondary mt-3';
+
+                    fetch('/api/slow')
+                        .then(statusCheck)
+                        .then(res => res.json())
+                        .then(data => {
+                            resultDiv.textContent = data.message;
+                            resultDiv.className =
+                                'alert alert-success mt-3';
+                        })
+                        .catch(error => {
+                            resultDiv.textContent =
+                                'Error: ' + error.message;
+                            resultDiv.className =
+                                'alert alert-danger mt-3';
+                        });
+                });
+
 
 
         </script>
