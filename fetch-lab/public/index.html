@@ -33,7 +33,7 @@
                 <h2 class="h4">3. Get Name (json response)</h2>
                 <input id="name-input" type="text" placeholder="Enter your name">
                 <button id="name-btn" class="btn btn-primary">
-                   Fetch /api/greet
+                    Fetch /api/greet
                 </button>
                 <div id="name-result" class="alert alert-secondary mt-3 mb-0" role="alert">
                     Click the button...
@@ -93,20 +93,24 @@
                         });
                 });
 
-            const name = document.getElementById('name-input').value;
-            fetch('/api/greet/' + name)
-                .then(statusCheck)
-                .then(res => res.json())
-                .then(data => {
-                    /* display data.greeting */
-                    document.getElementById('name-result')
-                                .textContent = data;
-                })
-                .catch(error => {
-                    /* handle error */
-                    document.getElementById('name-result')
+            document.getElementById('name-btn')
+                .addEventListener('click', () => {
+                    const name = document.getElementById('name-input').value;
+                    fetch('/api/greet/' + name)
+                        .then(statusCheck)
+                        .then(res => res.json())
+                        .then(json => {
+                            /* display data.greeting */
+                            console.log(json);
+                            document.getElementById('name-result')
+                                .textContent = json.greeting;
+                        })
+                        .catch(error => {
+                            /* handle error */
+                            document.getElementById('name-result')
                                 .textContent = 'Error: '
                                 + error.message;
+                        });
                 });
 
 
