@@ -2,6 +2,12 @@
  
 const express = require('express');
 const app = express();
+
+let messages = [
+  { id: 1, text: "Welcome to the message board!", author: "Admin" },
+];
+let nextId = 2;
+
  
 // Serve static files from the 'public' folder
 app.use(express.static('public'));
@@ -64,21 +70,26 @@ app.get('/api/messages', (req, res) => {
   res.type('json').send(messages);
 });
 
+
 app.post('/api/messages', (req, res) => {
   const text = req.body.text;
   const author = req.body.author;
+
   if (!text || !author) {
-    res.status(400).json({ error: 'text and author are required' });
-    return;
+    return res.status(400).json({ error: 'text and author are required' });
   }
-  let message = {
+
+  const message = {
     id: nextId,
-    text: req.body.text,
-    author: req.body.author
-  }
-  messages[nextId - 1] = message;
+    text,
+    author
+  };
+
+  messages.push(message);
   nextId++;
-  });
+
+  res.status(201).json(message);
+});
  
  
 // ---- Your endpoints go above this line ----
@@ -87,3 +98,4 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
